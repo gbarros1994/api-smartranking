@@ -2,3 +2,6 @@ COMANDOS PARA USO DO NEST
 
 CRIAÇÃO DE MODULOS
 nest g module <nome do modulo>
+
+CRIAÇÃO DE CONTROLLERS
+nest g module jogadores
