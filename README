@@ -5,3 +5,6 @@ nest g module <nome do modulo>
 
 CRIAÇÃO DE CONTROLLERS
 nest g module jogadores
+
+CRIAÇÃO DE SERVICES
+nest g service <nome da service>
