@@ -27,13 +27,19 @@ export class JogadoresService {
   }
 
   async consultarJogadoresPeloEmail(email: string): Promise<Jogador> {
-    const jogadorEnontrado = await this.jogadores.find(jogador => jogador.email === email);
+    const jogadorEnontrado = this.jogadores.find(jogador => jogador.email === email);
 
     if (!jogadorEnontrado) {
       throw new NotFoundException(`Jogador com e-mail ${email} não encontrado`);
     }
 
     return jogadorEnontrado;
+  }
+
+  async deletarJogador(email): Promise<void> {
+    const jogadorEnontrado = this.jogadores.find(jogador => jogador.email === email);
+
+    this.jogadores = this.jogadores.filter(jogador.email !== jogadorEnontrado.email);
   }
 
   private criar(criaJogadorDto: CriarJogadorDto): void {
