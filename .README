@@ -10,4 +10,6 @@ CRIAÇÃO DE SERVICES
 nest g service <nome da service>
 
 DTO(Data Transfer Object) 
-É um conceito de Java(J2EE) design. Parece um normal Java Bean objeto, criado para transferir o objeto de dados por várias camadas (como controller , service , database ) em nosso back-end, especialmente em Distributed Systems .
+É um conceito de Java(J2EE) design. Parece um normal Java Bean objeto,
+criado para transferir o objeto de dados por várias camadas (como controller , service , database ) em nosso back-end,
+especialmente em Distributed Systems .
