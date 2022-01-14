@@ -1,5 +1,5 @@
-import * as mongoose from 'mongoose';
 /* eslint-disable prettier/prettier */
+import * as mongoose from 'mongoose';
 
 export const JogadorSchema = new mongoose.Schema({
   telefoneCelular: {
