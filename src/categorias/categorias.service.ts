@@ -5,6 +5,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Categoria } from './interfaces/categoria.interface';
 import { Model } from 'mongoose';
 import { CriarCategoriaDto } from './dtos/criar-categoria.dto';
+import { AtualizarCategoriaDto } from './dtos/atualizar-categoria.dto';
 
 @Injectable()
 export class CategoriasService {
@@ -36,5 +37,15 @@ export class CategoriasService {
       }
 
       return categoriaEncontrada;
+    }
+
+    async atualizarCategoria(categoria: string, atualizarCategoriaDto: AtualizarCategoriaDto): Promise<void> {
+      const categoriaEncontrada = await this.categoriaModel.findOne({categoria}).exec();
+
+      if (!categoriaEncontrada) {
+        throw new NotFoundException(`Categoria ${categoria} não encontrada`)
+      }
+
+      await this.categoriaModel.findOneAndUpdate({categoria}, {$set: atualizarCategoriaDto}).exec();
     }
 }
