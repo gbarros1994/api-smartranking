@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Body, Controller, Post, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Post, UsePipes, ValidationPipe } from '@nestjs/common';
 import { CategoriasService } from './categorias.service';
 import { CriarCategoriaDto } from './dtos/criar-categoria.dto';
 import { Categoria } from './interfaces/categoria.interface';
@@ -14,6 +14,7 @@ export class CategoriasController {
     return await this.categoriasService.criarCategoria(criarCategoriaDto);
   }
 
+  @Get()
   async consultarCategorias(): Promise<Array<Categoria>> {
     return await this.categoriasService.consultarTodasCategorias();
   }

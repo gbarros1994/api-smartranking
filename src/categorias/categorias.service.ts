@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Categoria } from './interfaces/categoria.interface';
 import { Model } from 'mongoose';
@@ -26,5 +26,15 @@ export class CategoriasService {
 
     async consultarTodasCategorias(): Promise<Array<Categoria>> {
       return await this.categoriaModel.find().exec();
+    }
+
+    async consultarCategoriaPeloId(categoria: string): Promise<Categoria> {
+      const categoriaEncontrada = await this.categoriaModel.findOne({categoria}).exec();
+
+      if (!categoriaEncontrada) {
+        throw new NotFoundException(`Categoria ${categoria} não encontrada`);
+      }
+
+      return categoriaEncontrada;
     }
 }
