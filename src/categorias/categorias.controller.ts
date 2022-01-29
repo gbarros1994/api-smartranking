@@ -9,27 +9,38 @@ import { Categoria } from './interfaces/categoria.interface';
 export class CategoriasController {
   constructor(private readonly categoriasService: CategoriasService){}
 
+  // CADASTRAR CATEGORIAS
   @Post()
   @UsePipes(ValidationPipe)
   async criarCategoria(@Body() criarCategoriaDto: CriarCategoriaDto) : Promise<Categoria> {
     return await this.categoriasService.criarCategoria(criarCategoriaDto);
   }
 
+  // CONSULTAR TODAS CATEGORIAS
   @Get()
   async consultarCategorias(): Promise<Array<Categoria>> {
     return await this.categoriasService.consultarTodasCategorias();
   }
 
+  // CONSULTAR CATEGORIA POR ID
   @Get('/:categoria')
   async consultarCategoriaPeloId(@Param('categoria') categoria: string): Promise<Categoria> {
     return await this.categoriasService.consultarCategoriaPeloId(categoria);
   }
 
+  // ATUALIZAR CATEGORIA
   @Put('/:categoria')
   async atualizarCategoria(
     @Body() atualizarCategoriaDto: AtualizarCategoriaDto,
     @Param('categoria') categoria: string): Promise<void> {
 
       await this.categoriasService.atualizarCategoria(categoria, atualizarCategoriaDto);
+  }
+
+  // ATRIBUIR CATEGORIA A UM JOGADOR
+  @Post('/:categoria/jogadores/idJogador')
+  async atribuirCategoriaJogador(
+    @Param() params: string[]): Promise<void> {
+    console.log('a')
   }
 }
