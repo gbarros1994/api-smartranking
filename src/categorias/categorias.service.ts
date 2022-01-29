@@ -6,18 +6,20 @@ import { Categoria } from './interfaces/categoria.interface';
 import { Model } from 'mongoose';
 import { CriarCategoriaDto } from './dtos/criar-categoria.dto';
 import { AtualizarCategoriaDto } from './dtos/atualizar-categoria.dto';
+import { JogadoresService } from 'src/jogadores/jogadores.service';
 
 @Injectable()
 export class CategoriasService {
 
-  constructor(@InjectModel('Categoria') private readonly categoriaModel: Model<Categoria>) {}
+  constructor(@InjectModel('Categoria') private readonly categoriaModel: Model<Categoria>,
+  private readonly jogadoresService: JogadoresService) {}
     
     async criarCategoria(criarCategoriaDto: CriarCategoriaDto): Promise<Categoria> {
       const { categoria } = criarCategoriaDto;
 
       const categoriaEncontrada = await this.categoriaModel.find({categoria}).exec();
-
-      if (categoriaEncontrada) {
+      
+      if (!categoriaEncontrada) {
         throw new BadRequestException(`Categoria ${categoria} já cadastrada!`)
       }
 
@@ -26,7 +28,7 @@ export class CategoriasService {
     }
 
     async consultarTodasCategorias(): Promise<Array<Categoria>> {
-      return await this.categoriaModel.find().exec();
+      return await this.categoriaModel.find().populate("jogadores").exec();
     }
 
     async consultarCategoriaPeloId(categoria: string): Promise<Categoria> {
@@ -47,5 +49,26 @@ export class CategoriasService {
       }
 
       await this.categoriaModel.findOneAndUpdate({categoria}, {$set: atualizarCategoriaDto}).exec();
+    }
+
+    async atribuirCategoriaJogador(params: string[]): Promise<void> {
+      const categoria = params['categoria'];
+      const idJogador = params['idJogador'];
+
+      const categoriaEncontrada = await this.categoriaModel.findOne({categoria}).exec();
+      const jogadorJaCadastradoCategoria = await this.categoriaModel.find({categoria}).where('jogadores').in(idJogador).exec();
+
+      await this.jogadoresService.consultarJogadorPeloId(idJogador);
+
+      if (!categoriaEncontrada) {
+        throw new BadRequestException(`Categoria ${categoria} não cadastrada`);
+      }
+
+      if (jogadorJaCadastradoCategoria.length > 0) {
+        throw new BadRequestException(`Jogador ${idJogador} já cadastrado na categoria`);
+      }
+      
+      categoriaEncontrada.jogadores.push(idJogador);
+      await this.categoriaModel.findOneAndUpdate({categoria}, {$set: categoriaEncontrada}).exec();
     }
 }
