@@ -1,4 +1,4 @@
----- COMANDOS PARA USO DO NEST ----
+--- COMANDOS PARA USO DO NEST ---
 
 CRIAÇÃO DE MODULOS
 nest g module <nome do modulo>
